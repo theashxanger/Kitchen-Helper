@@ -86,7 +86,7 @@ Hi,this was my first GitHub project.AND I am writing code to make food with help
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
         const apiKey = ""; // AIzaSyAEtLV55mMB3_PX5Ln3BFkdv8Dg3sApPyU
             const modelName = 'gemini-2.5-flash-preview-09-2025';
-        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent';
 
         const ingredientsInput = document.getElementById('ingredients');
         const generateBtn = document.getElementById('generateBtn');
