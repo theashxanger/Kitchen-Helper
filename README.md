@@ -11,8 +11,8 @@ Hi,this was my first GitHub project.AND I am writing code to make food with help
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
-        body {
+
+        
             font-family: 'Poppins', sans-serif;
             background-color: #f7f3f0; /* हल्का बेज पृष्ठभूमि */
         }
