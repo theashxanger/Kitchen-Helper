@@ -7,7 +7,7 @@ Hi,this was my first GitHub project.AND I am writing code to make food with help
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>किचन शेफ - सामग्री से रेसिपी</title>
+    <title>KYA BANAU</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
