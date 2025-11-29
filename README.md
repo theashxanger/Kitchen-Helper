@@ -39,16 +39,16 @@ Hi,this was my first GitHub project.AND I am writing code to make food with help
     <div class="w-full max-w-2xl mt-4 card p-6 sm:p-8">
         <!-- हेडर (Header) -->
         <h1 class="text-3xl sm:text-4xl font-bold text-gray-800 text-center mb-2">
-            किचन शेफ
+           KYA KHAYEGA
         </h1>
         <p class="text-center text-gray-500 mb-8">
-            बताइए आपके पास क्या सामग्री है, और मैं आपको एक रेसिपी दूँगा!
+           CHAL BATA KYA HAI KITCHEN MAI,MAI JAADU DIKHATA HU
         </p>
 
         <!-- सामग्री इनपुट (Ingredients Input) -->
         <div class="mb-6">
             <label for="ingredients" class="block text-lg font-medium text-gray-700 mb-2">
-                आपके पास उपलब्ध सामग्री (एक सूची में लिखें, जैसे: आटा, प्याज, टमाटर, पनीर, मसाले)
+               TERAI PASS JO HAI LIKH DAI CHUP-CHAP{ex. ATTA,DAAL,CHINI,NAKAM,OR SINGLE HU BHI CHAL SAKTA HAI😂}
             </label>
             <textarea id="ingredients" rows="4" class="w-full p-4 border border-gray-300 rounded-xl focus:ring-red-500 focus:border-red-500 transition duration-150" placeholder="चावल, दाल, आलू, हरी मिर्च, दही, नमक..."></textarea>
         </div>
@@ -60,7 +60,7 @@ Hi,this was my first GitHub project.AND I am writing code to make food with help
             </button>
             <div id="loadingIndicator" class="hidden text-red-600 font-medium flex items-center space-x-2">
                 <div class="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-6 w-6"></div>
-                <span>रेसिपी ढूंढ रहा हूँ...</span>
+                <span>AJ KHANA TERA BHAI SET KAREGA..</span>
             </div>
             <p id="errorBox" class="text-red-500 hidden font-semibold mt-4"></p>
         </div>
@@ -68,7 +68,7 @@ Hi,this was my first GitHub project.AND I am writing code to make food with help
         <!-- रेसिपी आउटपुट (Recipe Output) -->
         <div id="recipeOutput" class="mt-10 pt-6 border-t border-gray-200">
             <h2 class="text-2xl font-semibold text-gray-800 mb-4 hidden" id="outputHeader">
-                💡 आपके लिए सुझावित पकवान:
+                💡 TERAI LIYA SUGGEST KIYA HAI PYAR SAI🤤
             </h2>
             <div id="recipeContent" class="prose max-w-none">
                 <!-- रेसिपी यहाँ प्रदर्शित होगी -->
