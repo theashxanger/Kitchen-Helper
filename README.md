@@ -1,5 +1,7 @@
 # Kitchen-Helper
 Hi,this was my first GitHub project.AND I am writing code to make food with help of AI by your kichen item.
+
+
 <!DOCTYPE html>
 <html lang="hi">
 <head>
@@ -27,21 +29,15 @@ Hi,this was my first GitHub project.AND I am writing code to make food with help
             background-color: #dc2626;
             transform: translateY(-1px);
         }
-        /* लोडर स्टाइल */
         .loader {
-            border-top-color: #ef4444; /* लाल रंग */
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            border-top-color: #dc2626;
         }
     </style>
 </head>
 <body class="p-4 sm:p-8 min-h-screen flex items-start justify-center">
 
     <div class="w-full max-w-2xl mt-4 card p-6 sm:p-8">
-        <!-- हेडर -->
+        <!-- हेडर (Header) -->
         <h1 class="text-3xl sm:text-4xl font-bold text-gray-800 text-center mb-2">
             किचन शेफ
         </h1>
@@ -49,7 +45,7 @@ Hi,this was my first GitHub project.AND I am writing code to make food with help
             बताइए आपके पास क्या सामग्री है, और मैं आपको एक रेसिपी दूँगा!
         </p>
 
-        <!-- सामग्री इनपुट -->
+        <!-- सामग्री इनपुट (Ingredients Input) -->
         <div class="mb-6">
             <label for="ingredients" class="block text-lg font-medium text-gray-700 mb-2">
                 आपके पास उपलब्ध सामग्री (एक सूची में लिखें, जैसे: आटा, प्याज, टमाटर, पनीर, मसाले)
@@ -57,7 +53,7 @@ Hi,this was my first GitHub project.AND I am writing code to make food with help
             <textarea id="ingredients" rows="4" class="w-full p-4 border border-gray-300 rounded-xl focus:ring-red-500 focus:border-red-500 transition duration-150" placeholder="चावल, दाल, आलू, हरी मिर्च, दही, नमक..."></textarea>
         </div>
 
-        <!-- बटन और लोडिंग इंडिकेटर -->
+        <!-- बटन और लोडिंग इंडिकेटर (Button and Loading Indicator) -->
         <div class="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4">
             <button id="generateBtn" class="btn-primary text-white font-semibold py-3 px-6 rounded-xl w-full sm:w-auto shadow-lg hover:shadow-xl flex items-center justify-center">
                 रेसिपी तैयार करें
@@ -66,11 +62,10 @@ Hi,this was my first GitHub project.AND I am writing code to make food with help
                 <div class="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-6 w-6"></div>
                 <span>रेसिपी ढूंढ रहा हूँ...</span>
             </div>
-            <!-- त्रुटि संदेश को अब अधिक स्पष्टता के साथ प्रदर्शित किया जाएगा -->
-            <p id="errorBox" class="text-red-500 font-medium hidden"></p>
+            <p id="errorBox" class="text-red-500 hidden font-semibold mt-4"></p>
         </div>
 
-        <!-- रेसिपी आउटपुट -->
+        <!-- रेसिपी आउटपुट (Recipe Output) -->
         <div id="recipeOutput" class="mt-10 pt-6 border-t border-gray-200">
             <h2 class="text-2xl font-semibold text-gray-800 mb-4 hidden" id="outputHeader">
                 💡 आपके लिए सुझावित पकवान:
@@ -82,11 +77,17 @@ Hi,this was my first GitHub project.AND I am writing code to make food with help
     </div>
 
     <script>
-        // फायरबेस कॉन्फ़िगरेशन
+        // *******************************************************************
+        // ******* आपकी API Key यहाँ डाल दी गई है (FINAL VERSION) *******
+        // *******************************************************************
+        const apiKey = "AIzaSyAEtLV55mMB3_PX5Ln3BFkdv8Dg3sApPyU"; 
+        
+        // बाकी कॉन्फ़िगरेशन
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-        const apiKey = ""; // AIzaSyAEtLV55mMB3_PX5Ln3BFkdv8Dg3sApPyU
-            const modelName = 'gemini-2.5-flash-preview-09-2025';
-        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent';
+        const modelName = 'gemini-2.5-flash-preview-09-2025';
+        
+        // API URL में Key को पैरामीटर के रूप में जोड़ा जा रहा है (सबसे विश्वसनीय तरीका)
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`; 
 
         const ingredientsInput = document.getElementById('ingredients');
         const generateBtn = document.getElementById('generateBtn');
@@ -96,34 +97,62 @@ Hi,this was my first GitHub project.AND I am writing code to make food with help
         const outputHeader = document.getElementById('outputHeader');
         const errorBox = document.getElementById('errorBox');
 
+        // लोडर CSS
+        const style = document.createElement('style');
+        style.textContent = `
+            .loader {
+                border-top-color: #ef4444;
+                animation: spin 1s linear infinite;
+            }
+            @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+        `;
+        document.head.appendChild(style);
+
+
         // API कॉल के लिए एक्सपोनेंशियल बैकऑफ
         async function fetchWithExponentialBackoff(url, options, maxRetries = 5) {
             for (let i = 0; i < maxRetries; i++) {
                 try {
                     const response = await fetch(url, options);
+
                     if (response.status === 429 && i < maxRetries - 1) {
-                        const delay = Math.pow(2, i) * 1000 + Math.random() * 1000;
+                        const delay = Math.pow(2, i) * 1000 + Math.random() * 500;
                         await new Promise(resolve => setTimeout(resolve, delay));
-                        continue;
+                        continue; 
                     }
+
                     if (!response.ok) {
                         const errorText = await response.text();
-                        // 400 या 500 एरर के लिए स्पष्ट त्रुटि संदेश फेंकें
-                        // FIX: यहाँ से अतिरिक्त बैकस्लैश (\) हटाया गया
-                        throw new Error(`API अनुरोध विफल: ${response.status} ${response.statusText}. विवरण: ${errorText}`);
+                        const errorMessage = `API अनुरोध विफल: ${response.status} ${response.statusText}. विवरण: ${errorText}`;
+                        console.error("API त्रुटि:", errorMessage);
+                        throw new Error(errorMessage);
                     }
-                    return response;
+                    
+                    return response; // सफल प्रतिक्रिया
                 } catch (error) {
+                    console.error('fetch के दौरान एक त्रुटि हुई:', error.message);
+                    
                     if (i === maxRetries - 1) {
-                        throw error;
+                        throw error; 
                     }
-                    const delay = Math.pow(2, i) * 1000 + Math.random() * 1000;
+                    
+                    const delay = Math.pow(2, i) * 1000 + Math.random() * 500;
                     await new Promise(resolve => setTimeout(resolve, delay));
                 }
             }
         }
 
         async function generateRecipe() {
+            // यदि Key गलती से हट गई हो तो चेक करें
+            if (apiKey === "" || !apiKey.startsWith("AIzaSy")) {
+                errorBox.textContent = "त्रुटि: API Key सही से सेट नहीं है।";
+                errorBox.classList.remove('hidden');
+                return;
+            }
+
             const ingredients = ingredientsInput.value.trim();
 
             if (!ingredients) {
@@ -168,18 +197,16 @@ Hi,this was my first GitHub project.AND I am writing code to make food with help
                     recipeContent.innerHTML = formatMarkdownToHtml(text);
                     outputHeader.classList.remove('hidden');
                 } else {
-                    console.error("अपेक्षित API परिणाम संरचना नहीं मिली:", result);
-                    errorBox.textContent = "रेसिपी उत्पन्न करने में कोई समस्या आई। (अपेक्षित डेटा प्राप्त नहीं हुआ)";
+                    console.error("अपेक्षित API परिणाम संरचना नहीं मिली। पूर्ण प्रतिक्रिया:", result);
+                    errorBox.textContent = "रेसिपी उत्पन्न करने में कोई समस्या आई। कृपया सामग्री की जाँच करें और पुनः प्रयास करें।";
                     errorBox.classList.remove('hidden');
                 }
 
             } catch (error) {
-                console.error('Gemini API कॉल त्रुटि:', error);
-                // त्रुटि संदेश को UI में प्रदर्शित करें
-                errorBox.textContent = `रेसिपी उत्पन्न करने में समस्या आई: ${error.message}। (कृपया अधिक विवरण के लिए ब्राउज़र कंसोल जांचें)`;
+                console.error('Gemini API कॉल त्रुटि (मुख्य कैच):', error);
+                errorBox.textContent = `रेसिपी उत्पन्न करने में समस्या: नेटवर्क त्रुटि या सर्वर से अवैध प्रतिक्रिया। कृपया कंसोल (F12) में विवरण देखें।`;
                 errorBox.classList.remove('hidden');
             } finally {
-                // UI स्टेट रीसेट करें
                 generateBtn.disabled = false;
                 generateBtn.classList.remove('opacity-50', 'cursor-not-allowed');
                 loadingIndicator.classList.add('hidden');
@@ -198,21 +225,18 @@ Hi,this was my first GitHub project.AND I am writing code to make food with help
 
             // यदि सूची आइटम हैं, तो उन्हें ul टैग में लपेटें
             if (html.includes('<li>')) {
-                // यह सुनिश्चित करता है कि सभी <li> आइटम एक या एक से अधिक <ul class="list-disc..."></ul> में लपेटे गए हैं
-                html = html.replace(/(<li>.*<\/li>)/gs, (match) => {
-                    if (match.startsWith('<ul')) return match; // पहले से ही लिस्ट में है
-                    return `<ul class="list-disc pl-5 space-y-2 text-gray-600 mb-4">${match}</ul>`;
-                });
+                html = html.replace(/(<li>.*<\/li>)/gs, '<ul class="list-disc pl-5 space-y-2 text-gray-600 mb-4">$1</ul>');
             }
             
             // सुनिश्चित करें कि लगातार बुलेट पॉइंट्स एक ही ul में रहें
             html = html.replace(/<\/ul>\s*<ul class="list-disc pl-5 space-y-2 text-gray-600 mb-4">/g, '');
 
             // पैराग्राफ को <p> टैग में लपेटें
+            // यह थोड़ा जटिल है, लेकिन सरल टेक्स्ट लाइनों को पैराग्राफ में बदलता है
             html = html.split('\n').map(line => {
                 line = line.trim();
                 // उन लाइनों को अनदेखा करें जो पहले से ही किसी टैग का हिस्सा हैं
-                if (line === '' || line.startsWith('<h') || line.startsWith('<ul') || line.startsWith('<li>') || line.startsWith('<strong>') || line.startsWith('<')) {
+                if (line === '' || line.startsWith('<h') || line.startsWith('<ul') || line.startsWith('<li>') || line.startsWith('<strong>')) {
                     return line;
                 }
                 // अन्यथा, इसे एक पैराग्राफ के रूप में मानें
