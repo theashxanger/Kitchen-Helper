@@ -34,6 +34,8 @@ Hi,this was my first GitHub project.AND I am writing code to make food with help
         }
     </style>
 </head>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7220261603740987"
+     crossorigin="anonymous"></script>
 <body class="p-4 sm:p-8 min-h-screen flex items-start justify-center">
 
     <div class="w-full max-w-2xl mt-4 card p-6 sm:p-8">
