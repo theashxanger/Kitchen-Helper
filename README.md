@@ -86,7 +86,7 @@ Hi,this was my first GitHub project.AND I am writing code to make food with help
         
         // बाकी कॉन्फ़िगरेशन
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-        const modelName = 'gemini-2.5-flash-preview-09-2025';
+        const modelName = 'gemini-1.5-flash';
         
         // API URL में Key को पैरामीटर के रूप में जोड़ा जा रहा है (सबसे विश्वसनीय तरीका)
         const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`; 
